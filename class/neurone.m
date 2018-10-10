@@ -47,13 +47,13 @@ classdef neurone<handle
             obj.activation_function=activation_function;
         end
         %%
-        function obj=updateActivation_value(obj,value)
+        function []=updateActivation_value(obj,value)
             %update activation_value with value and update activation_unit
             obj.activation_value=value;
             obj.updateActivation_unit();
         end
         %%
-        function obj=updateActivation_unit(obj)
+        function []=updateActivation_unit(obj)
             %update activation_unit based on activation_value and a sigmoid
             %function
             if isempty(obj.activation_function)

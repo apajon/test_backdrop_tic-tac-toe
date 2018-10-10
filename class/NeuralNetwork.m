@@ -38,7 +38,7 @@ classdef NeuralNetwork<handle
             end
         end
         %%
-        function obj=updateActivation(obj)
+        function []=updateActivation(obj)
             %update the activation_value of hidden and output neurons of 
             %the Neural Network
             for i=1:obj.NumberOfLayer+1
@@ -55,7 +55,7 @@ classdef NeuralNetwork<handle
             end
         end
         %%
-        function obj=buildChildren(obj)
+        function []=buildChildren(obj)
             %Build the children map connection for hidden and input neurons
             for i=obj.NumberOfLayer+1:-1:1
                 for j=1:size(obj.neurones.(['lvl_' num2str(i)]),2)
@@ -68,7 +68,7 @@ classdef NeuralNetwork<handle
             end
         end
         %%
-        function obj=Backprop(obj,v)
+        function []=Backprop(obj,v)
             %Backprop algorithm to update the weight based on known example
             for i=obj.NumberOfLayer+1:-1:1
                 for j=1:size(obj.neurones.(['lvl_' num2str(i)]),2)
