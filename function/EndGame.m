@@ -18,6 +18,6 @@ end
 %win diagonal
 if abs(sum(state([1 5 9])))==3||abs(sum(state([3 5 7])))==3
     EndGame=true;
-end
+end 
 
 end

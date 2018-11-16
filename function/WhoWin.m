@@ -3,7 +3,7 @@ total=sum(state);
 
 switch total
     case 0
-        winner=-1;
+        winner=0;
     case 1
         winner=+1;
     otherwise

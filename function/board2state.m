@@ -1,5 +1,5 @@
 function state=board2state(board)
-board_=[board(:,1);board(:,3);board(:,5)];
+board_=[board(:,2);board(:,4);board(:,6)];
 
 state=zeros(9,1);
 state(any(board_=='x',2))=+1;

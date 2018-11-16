@@ -3,6 +3,7 @@ classdef NeuralNetwork<handle
     properties
         NumberOfLayer       %number of hidden layer
         neurones            %storage of neurons
+        v                   %learning step
     end
     %%
     methods
@@ -68,7 +69,7 @@ classdef NeuralNetwork<handle
             end
         end
         %%
-        function []=Backprop(obj,v)
+        function []=Backprop(obj)
             %Backprop algorithm to update the weight based on known example
             for i=obj.NumberOfLayer+1:-1:1
                 for j=1:size(obj.neurones.(['lvl_' num2str(i)]),2)
@@ -88,13 +89,42 @@ classdef NeuralNetwork<handle
                     
                     for k=1:size(obj.neurones.(['lvl_' num2str(i)])(j).parent,1)
                         parent=obj.neurones.(['lvl_' num2str(i)])(j).parent(k,1:2);
-                        obj.neurones.(['lvl_' num2str(i)])(j).parent(k,3)=obj.neurones.(['lvl_' num2str(i)])(j).parent(k,3)+v*error_temp*obj.neurones.(['lvl_' num2str(parent(1))])(parent(2)).activation_unit;
+                        obj.neurones.(['lvl_' num2str(i)])(j).parent(k,3)=obj.neurones.(['lvl_' num2str(i)])(j).parent(k,3)+obj.v*error_temp*obj.neurones.(['lvl_' num2str(parent(1))])(parent(2)).activation_unit;
                     end
-                    obj.neurones.(['lvl_' num2str(i)])(j).b=obj.neurones.(['lvl_' num2str(i)])(j).b+v*error_temp*1;
+                    obj.neurones.(['lvl_' num2str(i)])(j).b=obj.neurones.(['lvl_' num2str(i)])(j).b+obj.v*error_temp*1;
                     
                     obj.neurones.(['lvl_' num2str(i)])(j).error_signal=error_temp;
                     
                 end
+            end
+        end
+        %%
+        function activation_units=getActivation_unit(obj,lvl)
+            activation_units=[];
+            for k=1:size(obj.neurones.(['lvl_' num2str(lvl)]),2)
+                activation_units=[activation_units;obj.neurones.(['lvl_' num2str(lvl)])(k).activation_unit];
+            end
+        end
+        %%
+        function []=changeInput(obj,input)
+            if ~(size(input,1)==size(obj.neurones.lvl_0,2))
+                msg='Bad input size\n';
+                errormsg=[msg];
+                error(errormsg,[])
+            end
+            for k=1:size(input,1)
+                obj.neurones.lvl_0(k).activation_unit=input(k,1);
+            end
+        end
+        %%
+        function []=changeTarget(obj,target)
+            if ~(size(target,1)==size(obj.neurones.(['lvl_' num2str(obj.NumberOfLayer+1)]),2))
+                msg='Bad target size\n';
+                errormsg=[msg];
+                error(errormsg,[])
+            end
+            for k=1:size(target,1)
+                obj.neurones.(['lvl_' num2str(obj.NumberOfLayer+1)])(k).target_unit=target(k,1);
             end
         end
     end
